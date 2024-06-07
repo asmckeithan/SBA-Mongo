@@ -4,20 +4,18 @@ const router = Router()
 // connecting user controls js file
 const usersCtrl = require('../controllers/user');
 
-// router.post('/', usersCtrl.createUser);
-
-// router.get('/', usersCtrl.getUsers);
-
-// router.get('/:id', usersCtrl.getUserById);
-
-// router.put('/:id', usersCtrl.updateUser);
-
-// router.delete('/:id', usersCtrl.deleteUser);
-
-// router.get('/email/:email', usersCtrl.findByEmail);
-
-
-
+router.post('/users', async (req, res) => {
+    const { name, email, age } = req.body;
+  
+    try {
+      const user = new User({ name, email, age });
+      await user.save();
+      res.send(user);
+    } catch (error) {
+      console.error(error);
+      res.status(404).send(error);
+    }
+  });
 
 
 module.exports = router;

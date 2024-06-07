@@ -22,7 +22,7 @@ app.use('/api', userRouter);
 
 
 
-
+//logs every request being made by displaying method
 app.use((req, res, next) => {
   console.log(`A ${req.method} request was made to ${req.url}`);
   next();
@@ -35,16 +35,7 @@ app.get('/', (req, res) => {
 
 
 
-// POST method route
-app.post('/', (req, res) => {
-  res.send('POST request was made')
-})
-
-
-//connecting 
-
-
-// Error Handling Middlware
+// Error Handling Middlware=------------------------------------------------------
 app.use((err, req, res, next) => {
   res.status(500).send('Something went wrong.');
 });
