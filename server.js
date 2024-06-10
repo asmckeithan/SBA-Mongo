@@ -1,16 +1,20 @@
-
+require('dotenv').config();
 // Connecting the express server and storing inside the app variable------------------
 const express = require('express');
+// Creating the express server and storing inside the app variable
 const app = express();
 
-// Creating the express server and storing inside the app variable
+//connecting database file 
+const mongoose = require('./model/db.js')
+
+//connecting the schema file 
+const User = require('./model/user.js')
 
 // Port in which the server will run on ----------------------------------------------
 const PORT = process.env.PORT || 8000;
 
 // connecting to mongodb database using mongoose -------------------------------------
-const database = require('./db.js')
-
+const database = require('./model/db.js')
 
 // Configuring the server to accept and parse JSON data.
 app.use(express.json());
@@ -18,7 +22,7 @@ app.use(express.json());
 //connecting user routes from routes/user.js
 const userRouter = require('./routes/users.js');
 //selecting the route path 
-app.use('/api', userRouter);
+app.use('/users', userRouter);
 
 
 
