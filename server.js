@@ -8,7 +8,7 @@ const app = express();
 const mongoose = require('./model/db.js')
 
 //connecting the schema file 
-const User = require('./model/user.js')
+const {User} = require('./model/user.js')
 
 // Port in which the server will run on ----------------------------------------------
 const PORT = process.env.PORT || 8000;
@@ -22,7 +22,7 @@ app.use(express.json());
 //connecting user routes from routes/user.js
 const userRouter = require('./routes/users.js');
 //selecting the route path 
-app.use('/users', userRouter);
+app.use('/users', userRouter)
 
 
 
@@ -38,11 +38,63 @@ app.get('/', (req, res) => {
 });
 
 
+// Routes
+app.post('/users', async (req, res) => {
+  try {
+      const newUser = await createUser(req.body);
+      res.status(201).json(newUser);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/users', async (req, res) => {
+  try {
+      const users = await getAllUsers();
+      res.json(users);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/users/:id', async (req, res) => {
+  try {
+      const user = await getUserById(req.params.id);
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+      res.json(user);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
+app.put('/users/:id', async (req, res) => {
+  try {
+      const updatedUser = await updateUser(req.params.id, req.body);
+      res.json(updatedUser);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
+app.delete('/users/:id', async (req, res) => {
+  try {
+      await deleteUser(req.params.id);
+      res.json({ message: 'User deleted successfully' });
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
+
 
 // Error Handling Middlware=------------------------------------------------------
 app.use((err, req, res, next) => {
   res.status(500).send('Something went wrong.');
 });
+
+
 
 // Calling the listen function telling the server to listen on port 3000
 app.listen(PORT, () => {

@@ -23,4 +23,10 @@ const addressSchema = new mongoose.Schema({
 
 
 
-module.exports = mongoose.model('User', userSchema);
+// Export User model
+const User = mongoose.model('User', userSchema);
+const Address = mongoose.model('Address', addressSchema);
+
+
+
+module.exports = { User, Address };
