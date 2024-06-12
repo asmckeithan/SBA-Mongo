@@ -7,45 +7,23 @@ const usersCtrl = require('../controllers/user');
 const User = require('../model/user')
 
 // Route to create a new user
-router.post('/create', async (req, res) => {
+router.post("/create", async (req, res) => {
     try {
-        const { username, email, password } = req.body;
-        
-        // Create a new user document using Mongoose
-        const newUser = new User({
-            username: username,
-            email: email,
-            password: password
-        });
-        
-        // Save the user document to the database
-        await newUser.save();
-
-        res.status(201).json(newUser);
+        const newUser = new User (req.body);
+        await newUser.save()
+        .then((savedUser) => {
+            console.log(savedUser);
+            res.status(201).json({message: "User successfully saved"})
+        }).catch((error) => {
+            console.log(error);
+            res.status(500).json({message: "Unable to create new user"})
+        })
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.log(error)
+        res.status(500).json({ message: " Unable to save new user" });
     }
 });
 
-// Read all users
-async function getAllUsers() {
-    return await User.find();
-}
-
-// Read a user by ID
-async function getUserById(userId) {
-    return await User.findById(userId);
-}
-
-// Update a user by ID
-async function updateUser(userId, newData) {
-    return await User.findByIdAndUpdate(userId, newData, { new: true });
-}
-
-// Delete a user by ID
-async function deleteUser(userId) {
-    return await User.findByIdAndDelete(userId);
-}
 
 
 

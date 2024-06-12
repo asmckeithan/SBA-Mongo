@@ -1,5 +1,8 @@
 const mongoose = require('mongoose')
 
+
+//creating the structure of the document we want to have 
+//Schema is meant to protray a login or signup form 
 const userSchema = new mongoose.Schema ({
     name:String,
     username: String,
@@ -7,7 +10,8 @@ const userSchema = new mongoose.Schema ({
     email:{
         type: String,
         required: true,
-        lowercase: true,
+        lowercase: true
+        
     },
     startDate: Date,
     updateDate: Date,
